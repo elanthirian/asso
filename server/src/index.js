@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 // Initialize database
+// Changes test
 require('./database');
 
 const app = express();
