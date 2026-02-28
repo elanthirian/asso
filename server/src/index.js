@@ -63,11 +63,12 @@ app.get('/api/dashboard', authenticate, (req, res) => {
   }
 });
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../client/dist')));
+// Serve static files in production (only if client dist exists — skip for split deployments)
+const clientDistPath = path.join(__dirname, '../../client/dist');
+if (process.env.NODE_ENV === 'production' && require('fs').existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    res.sendFile(path.join(clientDistPath, 'index.html'));
   });
 }
 
